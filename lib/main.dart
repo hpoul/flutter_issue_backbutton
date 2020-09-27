@@ -8,39 +8,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: TestScaffold(),
-    );
-  }
-}
-
-class TestScaffold extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // return KeyboardHandler(
-    //   child: ExampleWidget(
-    //     index: 0,
-    //   ),
-    // );
     return KeyboardHandler(
-      child: BackButtonNavigatorDelegate(onGenerateRoute: (settings) {
-        print('onGenerateRoute $settings');
-        return MaterialPageRoute(
-            builder: (context) => ExampleWidget(
-                  index: 0,
-                ));
-      }),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: ExampleWidget(),
+        // home: TestScaffold(),
+      ),
     );
   }
 }
 
 class ExampleWidget extends StatelessWidget {
-  const ExampleWidget({Key key, this.index}) : super(key: key);
+  const ExampleWidget({Key key, this.index = 0}) : super(key: key);
   final int index;
 
   @override
@@ -59,40 +42,6 @@ class ExampleWidget extends StatelessWidget {
                     )));
           },
         ),
-      ),
-    );
-  }
-}
-
-/// Wraps a navigator to send pop signals from the parent navigator to the child navigator.
-class BackButtonNavigatorDelegate extends StatefulWidget {
-  const BackButtonNavigatorDelegate({
-    Key key,
-    @required this.onGenerateRoute,
-  }) : super(key: key);
-
-  /// Called to generate a route for a given [RouteSettings].
-  final RouteFactory onGenerateRoute;
-
-  @override
-  _BackButtonNavigatorDelegateState createState() =>
-      _BackButtonNavigatorDelegateState();
-}
-
-class _BackButtonNavigatorDelegateState
-    extends State<BackButtonNavigatorDelegate> {
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
-
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        print('onWillPop...');
-        return !await _navigatorKey.currentState.maybePop();
-      },
-      child: Navigator(
-        key: _navigatorKey,
-        onGenerateRoute: widget.onGenerateRoute,
       ),
     );
   }
